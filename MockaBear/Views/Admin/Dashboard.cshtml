@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Dashboard";
+    var section = ViewBag.Section as string;
+}
+
+<!-- Conditional rendering -->
+@if (section == "products")
+{
+    @await Html.PartialAsync("ProductsViews/_ProductTable")
+}
+else if (section == "categories")
+{
+    @await Html.PartialAsync("CategoriesViews/_CategoryTable")
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/admin-navbar.css" />
+    @if (section == "products")
+    {
+        <link rel="stylesheet" href="~/css/Admin/product.css" />
+    }
+    else if (section == "categories")
+    {
+        <link rel="stylesheet" href="~/css/Admin/category.css" />
+    }
+}

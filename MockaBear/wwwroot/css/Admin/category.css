@@ -1,0 +1,20 @@
+﻿.admin-section {
+    margin: 2rem;
+    padding: 1rem;
+    background: #F6E6D6;
+    border-radius: 10px;
+}
+
+    .admin-section table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .admin-section th, .admin-section td {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .admin-section th {
+        background-color: #D7B49E;
+    }

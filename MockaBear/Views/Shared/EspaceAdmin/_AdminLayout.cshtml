@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin - MockaBear</title>
+    <link rel="stylesheet" href="~/css/admin-navbar.css" />
+    @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+
+    <!-- Barre de navigation ADMIN uniquement -->
+    @await Html.PartialAsync("_AdminNavBar")
+
+    <div class="admin-content">
+        @RenderBody()
+    </div>
+
+
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://kit.fontawesome.com/574c761be7.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<section>
+    <div class="table-card">
+        <div class="card-title">
+            <div class="title-container">
+                <h3><i class='bx bxs-coffee-bean'></i> Product list</h3>
+                <button class="btn-add">
+                    <i class="bx bx-plus"></i> Add a product
+                </button>
+            </div>
+            <div class="page-size-selector">
+                <label for="pageSize">Products per page :</label>
+                <select id="pageSize" [(ngModel)]="pageSize" (change)="updatePageSize()">
+                    <option *ngFor="let size of [1, 5, 10, 20, 50]" [value]="size">{{ size }}</option>
+                </select>
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>fgdfgdfg</td>
+                    <td>fdfgdfg</td>
+                    <td>dfgdfg</td>
+                    <td>dfgdfgdfg €</td>
+                    <td>
+                        <span class="stock">
+                            dfgdfgdfg
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline btn-sm btn-view">
+                            <i class='bx bx-search-alt-2'></i>
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-edit">
+                            <i class='bx bxs-edit'></i>
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-delete">
+                            <i class='bx bxs-trash-alt'></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+      
+        </div>
+
+    </div>
+</section>

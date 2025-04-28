@@ -1,0 +1,27 @@
+﻿<!-- _EditCategoryModal.cshtml -->
+<div id="editCategoryModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <div class="container">
+            <div class="title">Edit Category</div>
+            <form id="editCategoryForm" method="post" asp-controller="Category" asp-action="Update">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" id="editCategoryId" />
+
+                <div class="input-box">
+                    <span class="details">Category Name</span>
+                    <input type="text" name="Name" id="editCategoryName" required />
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Category Description</span>
+                    <textarea name="Description" id="editCategoryDescription" class="large-input" rows="5"></textarea>
+                </div>
+
+                <div class="button">
+                    <input type="submit" value="Update" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

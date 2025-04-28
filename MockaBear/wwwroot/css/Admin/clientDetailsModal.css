@@ -1,0 +1,109 @@
+﻿/* clientDetailModal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-content.client-detail-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 95%;
+    padding: 35px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: fadeInUp 0.4s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.client-image-container img {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ccc;
+}
+
+.client-info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #2c3e50;
+}
+
+    .client-info-container h2 {
+        font-size: 26px;
+        color: #1a1a1a;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .client-info-container p {
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 4px 0;
+        color: #555;
+    }
+
+        .client-info-container p strong {
+            color: #2c3e50;
+            width: 120px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+    .close-btn:hover {
+        transform: scale(1.1);
+    }
+
+.modal-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}

@@ -8,7 +8,10 @@
         public string ImageUrl { get; set; }
 
         public int Number { get; set; }
+        public string Task { get; set; }
+        public int TaskNumber { get; set; }
+        public DateTime DateAdded { get; set; } = DateTime.Now;
 
-        public List<CustomOrder> CustomOrders { get; set; }
+        public List<CustomOrder_Ingredient>? CustomOrder_Ingredients { get; set; }
     }
 }

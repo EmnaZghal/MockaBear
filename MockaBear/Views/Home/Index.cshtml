@@ -1,12 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Mocka Bear";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-   <p>fffffggggg</p>
-    <i class="fa-solid fa-mug-hot"></i>
-    <i class="fa-solid fa-fire-flame-simple"></i>
-    <p>cvxvcffff</p>
-</div>
+
+
+
+<section class="home">
+    <div class="home-text">
+        <h1>Welcome to<br />Mocka Bear</h1>
+        <p>Your cozy coffee break starts here.</p>
+        <a href="#" class="btn">Order Now</a>
+    </div>
+    <div class="home-img">
+        <img src="~/Images/Logo/logo.png" alt="Mocka Bear Logo" />
+    </div>
+</section>
+
+
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/home.css" />
+  
+
+}
+

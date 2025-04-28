@@ -1,0 +1,83 @@
+﻿.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-content.review-detail-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 500px; /* ← Plus petit qu’avant */
+    max-width: 90%;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: fadeInUp 0.4s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    color: #333;
+}
+
+    .modal-body h2 {
+        font-size: 26px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .modal-body p {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+        .modal-body p strong {
+            display: inline-block;
+            width: 130px;
+            color: #444;
+            font-weight: 600;
+        }
+
+.review-stars {
+    color: #f4c430;
+    font-size: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+    .close-btn:hover {
+        transform: scale(1.1);
+    }

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<MockaBear.Models.Review>
+@{
+    Layout = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Review Management";
+}
+
+@await Html.PartialAsync("~/Views/Admin/ReviewsViews/_ReviewDetailModal.cshtml")
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class="fa-solid fa-bars sidebarBtn"></i>
+            <span class="dashboard">Dashboard</span>
+        </div>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search. . ." />
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="profile-details">
+            <span class="admin-name">Emna Zghal</span>
+
+        </div>
+    </nav>
+
+</section>
+<section class="table-section">
+    <div class="table-card">
+        <div class="card-title">
+            <div class="title-container">
+                <h3><i class='bx bxs-star'></i> Review list</h3>
+            </div>
+            <form method="get" asp-controller="Review" asp-action="Reviews">
+                <input type="hidden" name="section" value="review" />
+                <div class="page-size-selector">
+                    <label for="pageSize">Review per page :</label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        @foreach (var size in new[] { 1, 5, 10, 20, 50 })
+                        {
+                            if ((int?)ViewBag.PageSize == size)
+                            {
+                                <option value="@size" selected>@size</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </form>
+
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Client Email</th>
+                    <th>Rate</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model)
+                {
+                    <tr>
+                        <td>@review.Product?.Name</td>
+                        <td>@review.Client?.Email</td>
+                        <td>
+                            @for (int i = 1; i <= @review.Rating; i++)
+                            {
+                                <i class='bx bxs-star' style="color: #f4c430;"></i>
+                            }
+                        </td>
+                        <td>@review.ReviewDate.ToString("dd-MM-yyyy")</td>
+                        
+                        <td>
+                            <button class="btn btn-outline btn-sm btn-view"
+                                    onclick="showReviewDetails(
+                                        '@review.Product?.Name',
+                                        '@review.Client?.Email',
+                                        '@review.Rating',
+                                        '@review.ReviewDate.ToString("dd-MM-yyyy")',
+                                        '@review.Comment')">
+                                <i class='bx bx-search-alt-2'></i>
+                            </button>
+
+
+                            <form asp-controller="Review" asp-action="Delete" asp-route-id="@review.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-outline btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this review?');">
+                                    <i class='bx bxs-trash-alt'></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button onclick="changePage(@(ViewBag.CurrentPage - 1))" class="btn1" @(ViewBag.CurrentPage == 1 ? "disabled" : "")>
+                <i class='bx bxs-left-arrow'></i>
+            </button>
+
+            <ul>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="@(ViewBag.CurrentPage == i ? "active" : "")" onclick="changePage(@i)">@i</li>
+                }
+            </ul>
+
+            <button onclick="changePage(@(ViewBag.CurrentPage + 1))" class="btn2" @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")>
+                <i class='bx bxs-right-arrow'></i>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    function changePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        urlParams.set("pageSize", document.querySelector("select[name='pageSize']").value);
+        window.location.search = urlParams.toString();
+    }
+
+        function showReviewDetails(productName, clientEmail, rating, date, comment) {
+        document.getElementById("reviewProductName").innerText = productName;
+        document.getElementById("reviewClientEmail").innerText = clientEmail;
+        document.getElementById("reviewRating").innerText = rating;
+        document.getElementById("reviewDate").innerText = date;
+        document.getElementById("reviewComment").innerText = comment || "No comment";
+
+        document.getElementById("reviewDetailModal").style.display = "flex";
+    }
+
+    function closeReviewDetailModal() {
+        document.getElementById("reviewDetailModal").style.display = "none";
+    }
+</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/review.css" />
+    <link rel="stylesheet" href="~/css/Admin/reviewDetailModal.css" />
+}

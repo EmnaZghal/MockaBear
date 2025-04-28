@@ -1,0 +1,121 @@
+﻿}
+
+/* === MODAL OVERLAY === */
+#signUpModal.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transform: translateY(50%);
+}
+
+    /* Quand modal actif */
+    #signUpModal.modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+/* === MODAL CONTENT === */
+#signUpModal .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 95%;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px);
+    transition: transform 0.4s ease;
+}
+
+/* Animation de montée */
+#signUpModal.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+/* === FORMULAIRE === */
+#signUpModal .container form {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+/* === TITRE DU MODAL === */
+#signUpModal .container .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* === CHAMPS FORMULAIRE === */
+#signUpModal .input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+    #signUpModal .input-box span.details {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    #signUpModal .input-box input[type="text"],
+    #signUpModal .input-box input[type="email"],
+    #signUpModal .input-box input[type="password"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+/* === SUBMIT BUTTON === */
+#signUpModal .button input[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #6f4e37; /* Couleur café */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    #signUpModal .button input[type="submit"]:hover {
+        background: #5a3f2b; /* Couleur café foncé au hover */
+    }
+
+/* === BOUTON FERMER === */
+#signUpModal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+}
+/* === ROW BOX POUR 2 CHAMPS SUR LA MÊME LIGNE === */
+#signUpModal .row-box {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+    #signUpModal .row-box .input-box {
+        flex: 1 1 48%;
+    }

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MockaBear.Models.Product>
+@{
+    ViewData["Title"] = "Mocka Bear";
+}
+
+<section id="product">
+    <h2>Our Menu</h2>
+    <div class="popular-container">
+
+        <form method="get" asp-controller="ProductList" asp-action="Products">
+            <div class="product-options">
+                <label for="pageSize">Products per page :</label>
+                <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                    @foreach (var size in new[] { 1, 2, 5, 10, 20, 50 })
+                    {
+                        if ((int?)ViewBag.PageSize == size)
+                        {
+                            <option value="@size" selected>@size</option>
+                        }
+                        else
+                        {
+                            <option value="@size">@size</option>
+                        }
+                    }
+                </select>
+            </div>
+        </form>
+        <div class="popular-product-container">
+
+            @foreach (var product in Model)
+            {
+                <div class="product-box">
+                    <a class="product-box-img" href="#">
+                        <img src="~/images/products/@product.Image" alt="@product.Name" />
+                    </a>
+                    <div class="product-box-text">
+                        <a href="#" class="product-text-title">@product.Name</a>
+                        <span>@product.Price €</span>
+                        <a href="#" class="product-cart-btn">
+                            <i class="fa-solid fa-cart-plus"></i> Add to cart
+                        </a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="pagination">
+        <button onclick="changePage(@(ViewBag.CurrentPage - 1))" class="btn1" @(ViewBag.CurrentPage == 1 ? "disabled" : "")>
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <ul>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="@(ViewBag.CurrentPage == i ? "active" : "")" onclick="changePage(@i)">
+                    @i
+                </li>
+            }
+        </ul>
+        <button onclick="changePage(@(ViewBag.CurrentPage + 1))" class="btn2" @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")>
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+    </div>
+</section>
+
+<script>
+    function changePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        const pageSizeSelect = document.querySelector("select[name='pageSize']");
+        if (pageSizeSelect) {
+            urlParams.set("pageSize", pageSizeSelect.value);
+        }
+        window.location.search = urlParams.toString();
+    }
+</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/productList.css" />
+}
+

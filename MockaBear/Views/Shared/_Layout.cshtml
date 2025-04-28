@@ -9,45 +9,84 @@
     <link rel="stylesheet" href="~/MockaBear.styles.css" asp-append-version="true" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Client/login.css"/>
+
+
+
     @RenderSection("Styles", required: false)
+    <!-- jQuery (à placer AVANT chosen) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chosen CSS et JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/Client/login.css" />
+    <link rel="stylesheet" href="~/css/Client/signUpModal.css" />
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MockaBear</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
+
+    @await Html.PartialAsync("~/Views/Home/_MainNavbar.cshtml")
+    @await Html.PartialAsync("~/Views/Home/_LoginModal.cshtml")
+    @await Html.PartialAsync("~/Views/Home/_SignUpModal.cshtml")
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - MockaBear - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/574c761be7.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://kit.fontawesome.com/574c761be7.js" crossorigin="anonymous"></script>
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script>
+        function openLoginModal() {
+            document.getElementById("loginModal").style.display = "flex";
+            document.getElementById("signUpModal").style.display = "none";
+        }
+
+        function closeLoginModal() {
+            document.getElementById("loginModal").style.display = "none";
+        }
+
+        function openSignUpModal() {
+            document.getElementById("loginModal").style.display = "none";
+            document.getElementById("signUpModal").style.display = "flex";
+        }
+
+        function closeSignUpModal() {
+            document.getElementById("signUpModal").style.display = "none";
+        }
+
+
+
+        window.onclick = function(event) {
+            const loginModal = document.getElementById("loginModal");
+            const signUpModal = document.getElementById("signUpModal");
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+            if (event.target === signUpModal) {
+                closeSignUpModal();
+            }
+        }
+           
+        document.addEventListener("DOMContentLoaded", function () {
+            var openSignUp = '@(ViewBag.OpenSignUpModal ?? false)';
+
+            if (openSignUp === 'True') {
+                openSignUpModal();
+            }
+        });
+    
+    </script>
+
+
 </body>
 </html>

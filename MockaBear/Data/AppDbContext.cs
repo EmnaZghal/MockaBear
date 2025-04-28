@@ -14,6 +14,7 @@ namespace MockaBear.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<CustomOrder> CustomOrders { get; set; }
+        public DbSet<CustomOrder_Ingredient> Custom_Ingredients { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<MockaBear.Models.Client>
+@{
+    Layout = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Client Management";
+}
+
+@await Html.PartialAsync("~/Views/Admin/ClientsViews/_ClientDetailModal.cshtml")
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class="fa-solid fa-bars sidebarBtn"></i>
+            <span class="dashboard">Dashboard</span>
+        </div>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search. . ." />
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="profile-details">
+            <span class="admin-name">Emna Zghal</span>
+
+        </div>
+    </nav>
+
+</section>
+<section class="table-section">
+    <div class="table-card">
+        <div class="card-title">
+            <div class="title-container">
+                <h3><i class="fa-solid fa-user"></i> Client list</h3>
+            </div>
+            <form method="get" asp-controller="Client" asp-action="Clients">
+                <input type="hidden" name="section" value="clients" />
+                <div class="page-size-selector">
+                    <label for="pageSize">Clients per page :</label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        @foreach (var size in new[] { 1, 5, 10, 20, 50 })
+                        {
+                            if ((int?)ViewBag.PageSize == size)
+                            {
+                                <option value="@size" selected>@size</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </form>
+
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Email</th>
+                    <th>Pohne</th>
+                    <th>Adress</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var client in Model)
+                {
+                    <tr>
+                        <td class="nowrap" style="whith:20px;">@client.FirstName @client.LastName</td>
+
+                        <td>@client.Email</td>
+                        <td>@client.Phone</td>
+                        <td>@client.Adress</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm btn-view"
+                                    onclick="showClientDetails('@client.FirstName', '@client.LastName', '@client.Email', '@client.Phone', '@client.Adress', '@client.Image')">
+                                <i class='bx bx-search-alt-2'></i>
+                            </button>
+                            <form asp-controller="Client" asp-action="Delete" asp-route-id="@client.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-outline btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this client?');">
+                                    <i class='bx bxs-trash-alt'></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button onclick="changePage(@(ViewBag.CurrentPage - 1))" class="btn1" @(ViewBag.CurrentPage == 1 ? "disabled" : "")>
+                <i class='bx bxs-left-arrow'></i>
+            </button>
+
+            <ul>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="@(ViewBag.CurrentPage == i ? "active" : "")" onclick="changePage(@i)">@i</li>
+                }
+            </ul>
+
+            <button onclick="changePage(@(ViewBag.CurrentPage + 1))" class="btn2" @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")>
+                <i class='bx bxs-right-arrow'></i>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    function changePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        urlParams.set("pageSize", document.querySelector("select[name='pageSize']").value);
+        window.location.search = urlParams.toString();
+    }
+
+        function showClientDetails(firstName, lastName, email, phone, address, image) {
+        document.getElementById("clientDetailName").innerText = firstName + " " + lastName;
+        document.getElementById("clientDetailEmail").innerText = email;
+        document.getElementById("clientDetailPhone").innerText = phone;
+        document.getElementById("clientDetailAddress").innerText = address;
+        document.getElementById("clientDetailImage").src = "/images/clients/" + image;
+
+        document.getElementById("clientDetailModal").style.display = "flex";
+    }
+
+    function closeClientDetailModal() {
+        document.getElementById("clientDetailModal").style.display = "none";
+    }
+</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/client.css" />
+    <link rel="stylesheet" href="~/css/Admin/clientDetailsModal.css" />
+}

@@ -3,9 +3,10 @@
     public class Review
     {
         public int Id { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
         public int Rating { get; set; } // Note sur 5 par exemple
-        public DateTime ReviewDate { get; set; }
+        public DateTime ReviewDate { get; set; } = DateTime.Now;
+
 
         public int ProductId { get; set; }
         public Product Product { get; set; }

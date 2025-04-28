@@ -22,21 +22,6 @@ namespace MockaBear.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CustomOrderIngredient", b =>
-                {
-                    b.Property<int>("CustomOrdersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomOrdersId", "IngredientsId");
-
-                    b.HasIndex("IngredientsId");
-
-                    b.ToTable("CustomOrderIngredient");
-                });
-
             modelBuilder.Entity("MockaBear.Models.Admin", b =>
                 {
                     b.Property<int>("Id")
@@ -49,7 +34,19 @@ namespace MockaBear.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -65,6 +62,12 @@ namespace MockaBear.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -87,11 +90,18 @@ namespace MockaBear.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -123,18 +133,48 @@ namespace MockaBear.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerName")
+                    b.Property<string>("CustomeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
                     b.ToTable("CustomOrders");
+                });
+
+            modelBuilder.Entity("MockaBear.Models.CustomOrder_Ingredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomOrderId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("Custom_Ingredients");
                 });
 
             modelBuilder.Entity("MockaBear.Models.Ingredient", b =>
@@ -145,6 +185,9 @@ namespace MockaBear.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -153,8 +196,18 @@ namespace MockaBear.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Task")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaskNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -174,6 +227,10 @@ namespace MockaBear.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
@@ -225,15 +282,14 @@ namespace MockaBear.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -246,9 +302,6 @@ namespace MockaBear.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("Stock")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -269,7 +322,6 @@ namespace MockaBear.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
@@ -290,21 +342,6 @@ namespace MockaBear.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("CustomOrderIngredient", b =>
-                {
-                    b.HasOne("MockaBear.Models.CustomOrder", null)
-                        .WithMany()
-                        .HasForeignKey("CustomOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MockaBear.Models.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MockaBear.Models.CustomOrder", b =>
                 {
                     b.HasOne("MockaBear.Models.Client", "Client")
@@ -314,6 +351,25 @@ namespace MockaBear.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("MockaBear.Models.CustomOrder_Ingredient", b =>
+                {
+                    b.HasOne("MockaBear.Models.CustomOrder", "CustomOrder")
+                        .WithMany("Custom_Ingredients")
+                        .HasForeignKey("CustomOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MockaBear.Models.Ingredient", "Ingredient")
+                        .WithMany("CustomOrder_Ingredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomOrder");
+
+                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("MockaBear.Models.Order", b =>
@@ -386,6 +442,16 @@ namespace MockaBear.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("MockaBear.Models.CustomOrder", b =>
+                {
+                    b.Navigation("Custom_Ingredients");
+                });
+
+            modelBuilder.Entity("MockaBear.Models.Ingredient", b =>
+                {
+                    b.Navigation("CustomOrder_Ingredients");
                 });
 
             modelBuilder.Entity("MockaBear.Models.Order", b =>

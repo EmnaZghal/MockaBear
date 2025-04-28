@@ -1,0 +1,183 @@
+﻿@model IEnumerable<MockaBear.Models.Ingredient>
+@{
+    Layout = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Ingredients Management";
+}
+
+@await Html.PartialAsync("~/Views/Admin/IngredientViews/_IngredientDetailModal.cshtml")
+@await Html.PartialAsync("~/Views/Admin/IngredientViews/_AddIngredient.cshtml")
+@await Html.PartialAsync("~/Views/Admin/IngredientViews/_EditIngredientModal.cshtml")
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class="fa-solid fa-bars sidebarBtn"></i>
+            <span class="dashboard">Dashboard</span>
+        </div>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search. . ." />
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="profile-details">
+            <span class="admin-name">Emna Zghal</span>
+
+        </div>
+    </nav>
+
+</section>
+<section class="table-section">
+    <div class="table-card">
+        <div class="card-title">
+            <div class="title-container">
+                <h3>  <i class="fa-solid fa-basket-shopping"></i> Ingredients list</h3>
+                <button class="btn-add" onclick="openModal()">
+                    <i class="bx bx-plus"></i> Add an ingredient
+                </button>
+            </div>
+            <form method="get" asp-controller="Ingredient" asp-action="Ingredients">
+                <input type="hidden" name="section" value="ingredients" />
+                <div class="page-size-selector">
+                    <label for="pageSize">Ingredients per page :</label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        @foreach (var size in new[] { 1, 5, 10, 20, 50 })
+                        {
+                            if ((int?)ViewBag.PageSize == size)
+                            {
+                                <option value="@size" selected>@size</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </form>
+
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Number</th>
+                    <th>Task</th>
+                    <th>Task Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ingredient in Model)
+                {
+                    <tr>
+                        <td>@ingredient.Name</td>
+                        <td><img src="~/images/ingredients/@ingredient.ImageUrl" alt="Ingredient Image"/></td>
+                        <td>@ingredient.Price €</td>
+                        <td>@ingredient.Number</td>
+                        <td>@ingredient.Task</td>
+                        <td>@ingredient.TaskNumber</td>
+                        
+                        <td>
+                            <button class="btn btn-outline btn-sm btn-view"
+                                    onclick="showIngredientDetails('@ingredient.Name', '@ingredient.Price', '@ingredient.Number', '@ingredient.Task', '@ingredient.TaskNumber', '@ingredient.ImageUrl')">
+                                <i class='bx bx-search-alt-2'></i>
+                            </button>
+
+                            <button class="btn btn-outline btn-sm btn-edit"
+                                    onclick="openEditIngredientModal(
+                                        @ingredient.Id,
+                                        '@ingredient.Name',
+                                        '@ingredient.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)',
+                                        '@ingredient.Number',
+                                        '@ingredient.Task',
+                                        '@ingredient.TaskNumber',
+                                        '@ingredient.ImageUrl'
+                                    )">
+                                <i class='bx bxs-edit'></i>
+                            </button>
+
+                            <form asp-controller="Ingredient" asp-action="Delete" asp-route-id="@ingredient.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-outline btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this ingredient?');">
+                                    <i class='bx bxs-trash-alt'></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button onclick="changePage(@(ViewBag.CurrentPage - 1))" class="btn1" @(ViewBag.CurrentPage == 1 ? "disabled" : "")>
+                <i class='bx bxs-left-arrow'></i>
+            </button>
+
+            <ul>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="@(ViewBag.CurrentPage == i ? "active" : "")" onclick="changePage(@i)">@i</li>
+                }
+            </ul>
+
+            <button onclick="changePage(@(ViewBag.CurrentPage + 1))" class="btn2" @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")>
+                <i class='bx bxs-right-arrow'></i>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<script>
+
+    function openModal() {
+        document.getElementById("ingredientModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("ingredientModal").style.display = "none";
+    }
+    function changePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        urlParams.set("pageSize", document.querySelector("select[name='pageSize']").value);
+        window.location.search = urlParams.toString();
+    }
+
+    function showIngredientDetails(name, price, number, task, taskNumber, imageUrl) {
+        document.getElementById("ingredientDetailName").innerText = name;
+        document.getElementById("ingredientDetailPrice").innerText = price;
+        document.getElementById("ingredientDetailNumber").innerText = number;
+        document.getElementById("ingredientDetailTask").innerText = task;
+        document.getElementById("ingredientDetailTaskNumber").innerText = taskNumber;
+        document.getElementById("ingredientDetailImage").src = "/images/ingredients/" + imageUrl;
+        document.getElementById("ingredientDetailModal").style.display = "flex";
+    }
+
+    function closeIngredientDetailModal() {
+        document.getElementById("ingredientDetailModal").style.display = "none";
+    }
+
+     function openEditIngredientModal(id, name, price, number, task, taskNumber, imageUrl) {
+        document.getElementById("editIngredientId").value = id;
+        document.getElementById("editIngredientName").value = name;
+        document.getElementById("editIngredientPrice").value = price;
+        document.getElementById("editIngredientNumber").value = number;
+        document.getElementById("editIngredientTask").value = task;
+        document.getElementById("editIngredientTaskNumber").value = taskNumber;
+        document.getElementById("editIngredientOldImage").value = imageUrl;
+
+        document.getElementById("editIngredientModal").style.display = "flex";
+    }
+
+    function closeEditIngredientModal() {
+        document.getElementById("editIngredientModal").style.display = "none";
+    }
+</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/ingredient.css" />
+    <link rel="stylesheet" href="~/css/Admin/IngredientsModal.css" />
+    <link rel="stylesheet" href="~/css/Admin/ingredientDetailModal.css" />
+
+}

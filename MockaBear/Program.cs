@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var app = builder.Build();
 
 
-
+app.UseDeveloperExceptionPage();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

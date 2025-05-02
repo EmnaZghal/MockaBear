@@ -2,9 +2,12 @@
 @{
     Layout = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
     ViewData["Title"] = "Client Management";
+    var error = TempData["Error"] as string;
+    var success = TempData["Success"] as string;
 }
 
 @await Html.PartialAsync("~/Views/Admin/ClientsViews/_ClientDetailModal.cshtml")
+
 
 <section class="home-section">
     <nav>
@@ -13,12 +16,14 @@
             <span class="dashboard">Dashboard</span>
         </div>
 
-        <div class="search-box">
-            <input type="text" placeholder="Search. . ." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+
         <div class="profile-details">
-            <span class="admin-name">Emna Zghal</span>
+            <span class="admin-name">
+                @Context.Session.GetString("AdminFirstName") @Context.Session.GetString("AdminLastName")
+            </span>
+            <img src="~/images/admin/admin.png"
+                 alt="Profile Image"
+                 style=" padding-left:15px; width: 70px; height: 70px; border-radius: 50%; object-fit: cover;" />
 
         </div>
     </nav>
@@ -129,7 +134,9 @@
     function closeClientDetailModal() {
         document.getElementById("clientDetailModal").style.display = "none";
     }
+
 </script>
+
 @section Styles {
     <link rel="stylesheet" href="~/css/Admin/client.css" />
     <link rel="stylesheet" href="~/css/Admin/clientDetailsModal.css" />

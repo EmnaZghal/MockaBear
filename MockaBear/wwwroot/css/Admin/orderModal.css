@@ -1,0 +1,122 @@
+﻿/* ----------------------------------------
+   Styles communs à toutes les modales 
+   ---------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+    /* Bouton de fermeture */
+    .modal-content .close-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 1.5rem;
+        color: #666;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+/* ----------------------------------------
+   Spécifique à OrderDetailModal
+   ---------------------------------------- */
+#orderDetailModal .modal-content {
+    max-width: 700px;
+}
+
+#orderDetailModal h4 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: #6f4e37;
+}
+
+#orderDetailModal .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+    #orderDetailModal .data-table th,
+    #orderDetailModal .data-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    #orderDetailModal .data-table th {
+        background: #f9f9f9;
+        font-weight: 600;
+    }
+
+/* ----------------------------------------
+   Spécifique à EditOrderModal
+   ---------------------------------------- */
+#editOrderModal .modal-content {
+    max-width: 400px;
+}
+
+#editOrderModal h4 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: #6f4e37;
+}
+
+/* Champs du formulaire */
+#editOrderModal .input-box {
+    margin: 15px 0;
+}
+
+    #editOrderModal .input-box .details {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    #editOrderModal .input-box select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+        font-size: 1rem;
+        outline: none;
+    }
+
+/* Bouton de sauvegarde */
+#editOrderModal .button {
+    text-align: right;
+    margin-top: 20px;
+}
+
+    #editOrderModal .button .btn-primary {
+        background-color: #6f4e37;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #editOrderModal .button .btn-primary:hover {
+            background-color: #593b2e;
+        }

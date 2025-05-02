@@ -1,0 +1,170 @@
+﻿@model MockaBear.Models.Product
+
+@{
+    ViewData["Title"] = Model.Name;
+    int cartCount = ViewBag.CartCount ?? 0;
+}
+
+@await Html.PartialAsync("~/Views/Home/_ReviewModal.cshtml")
+
+<section id="product-details">
+    <div class="product-details-container">
+        <div class="product-image">
+            <img src="~/images/products/@Model.Image" alt="@Model.Name" />
+        </div>
+        <div class="product-info">
+            <h1>@Model.Name</h1>
+            <h3>@Model.Category?.Name</h3>
+
+            <p><strong>Price:</strong> @Model.Price €</p>
+            <p><strong>Available:</strong> @(Model.IsAvailable ? "Yes" : "No")</p>
+
+            <p>@Model.Description</p>
+            <div class="add-to-cart-area">
+                <label for="qtyInput" class="qty-label">Qty&nbsp;:</label>
+                <input type="number"
+                       id="qtyInput"
+                       class="qty-input"
+                       name="qty"
+                       min="1"
+                       value="1" />
+
+                <a href="#"
+                   class="add-to-cart-btn"
+                   onclick="addToCart(@Model.Id); return false;">
+                    <i class="fa-solid fa-cart-plus"></i> Add to cart
+                </a>
+
+
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <hr class="product-separator">
+
+    <section id="product-reviews">
+        <h2>Customer Reviews</h2>
+
+        @if (Context.Session.GetInt32("ClientId") != null)
+        {
+            <a href="#"
+               class="add-review-btn"
+               onclick="openAddReviewModal()">
+                <i class="fa-solid fa-pen-to-square"></i> Write a review
+            </a>
+        }
+        else
+        {
+            <p class="login-to-review">
+                Please <a href="#" onclick="openLoginModal()">log in</a> to write a review.
+            </p>
+        }
+        @if (Model.Reviews == null || !Model.Reviews.Any())
+        {
+            <p class="no-review">There are no reviews yet.</p>
+        }
+        else
+        {
+            <div class="reviews-grid">
+                @foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate))
+                {
+                    <div class="review-card">
+                        <!-- Avatar + nom / prénom -->
+                        <div class="review-author">
+                            <img src="~/images/clients/@(review.Client?.Image ?? "default-avatar.png")"
+                                 alt="avatar @review.Client?.FirstName"
+                                 class="avatar" />
+
+                            <div class="author-info">
+                                <span class="name">
+                                    @review.Client?.FirstName @review.Client?.LastName
+                                </span>
+                                <span class="date">
+                                    @review.ReviewDate.ToString("dd MMM yyyy")
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="rating">
+                            @{
+                                for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="fa-solid fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-regular fa-star"></i>
+                                    }
+                                }
+                            }
+                        </div>
+
+                        <!-- Commentaire -->
+                        <p class="review-text">@review.Comment</p>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</section>
+
+
+
+<script>
+    function openAddReviewModal(){
+       document.getElementById("addReviewModal").style.display = "flex";
+    }
+
+        function closeReviewModal() {
+            document.getElementById("addReviewModal").style.display = "none";
+        }
+
+            function addToCart(prodId){
+        const qty = parseInt(document.getElementById("qtyInput").value) || 1;
+
+        /* appel AJAX vers Cart/Add … */
+        fetch("/Cart/Add",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ productId: prodId, qty: qty })
+        })
+        .then(r=>r.ok?r.json():Promise.reject())
+        .then(d=>{
+            document.querySelector(".cart-badge").innerText = d.count;
+        });
+    }
+
+    const isLoggedIn = @(Context.Session.GetInt32("ClientId") != null ? "true" : "false");
+
+    function addToCart(prodId){
+        /* non connecté → ouvre la modale Login */
+        if (isLoggedIn === "false"){
+            if (typeof openLoginModal === "function") openLoginModal();
+            return;
+        }
+
+        const qty = parseInt(document.getElementById("qtyInput").value) || 1;
+
+        fetch("/Cart/Add",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ productId: prodId, qty: qty })
+        })
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+            document.querySelector(".cart-badge").innerText = data.count;
+        })
+        .catch(() => alert("Error adding to cart"));
+    }
+
+</script>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/productDetails.css" />
+    <link rel="stylesheet" href="~/css/Client/reviewModal.css" />
+}

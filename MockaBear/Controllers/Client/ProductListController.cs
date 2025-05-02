@@ -34,5 +34,25 @@ namespace MockaBear.Controllers.Client
 
             return View("~/Views/Home/ProductList.cshtml", products);
         }
+
+
+        [HttpGet("Details/{id}")]
+        public IActionResult Details(int id)
+        {
+            var product = _context.Products
+                                  .Include(p => p.Category)
+                                  .Include(p => p.Reviews)
+                                   .ThenInclude(r => r.Client)
+                                  .FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View("~/Views/Home/ProductDetails.cshtml", product);
+        }
+
+
     }
 }

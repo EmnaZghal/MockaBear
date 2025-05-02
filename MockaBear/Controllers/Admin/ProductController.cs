@@ -52,7 +52,7 @@ namespace MockaBear.Controllers.Admin
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add(IFormFile ImageFile, string Name, string Description, string  Price, bool IsAvailable, int CategoryId)
+        public async Task<IActionResult> Add(IFormFile ImageFile, string Name, string Description, string  Price, int Stock, bool IsAvailable, int CategoryId)
         {
 
             if (!decimal.TryParse(Price, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal parsedPrice))
@@ -81,6 +81,7 @@ namespace MockaBear.Controllers.Admin
                 Name = Name,
                 Description = Description,
                 Price = parsedPrice,
+                Stock = Stock,
                 IsAvailable = IsAvailable,
                 CategoryId = CategoryId,
                 Image = imageName
@@ -95,7 +96,7 @@ namespace MockaBear.Controllers.Admin
 
 
         [HttpPost("update")]
-        public async Task<IActionResult> Update(int Id, IFormFile ImageFile, string Name, string Description, string Price, bool IsAvailable, int CategoryId)
+        public async Task<IActionResult> Update(int Id, IFormFile ImageFile, string Name, string Description, string Price, int Stock, bool IsAvailable, int CategoryId)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == Id);
             if (product == null)
@@ -134,6 +135,7 @@ namespace MockaBear.Controllers.Admin
             product.Name = Name;
             product.Description = Description;
             product.Price = parsedPrice;
+            product.Stock = Stock;
             product.IsAvailable = IsAvailable;
             product.CategoryId = CategoryId;
 

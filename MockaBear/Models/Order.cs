@@ -6,6 +6,9 @@
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalAmount { get; set; }
 
+        public string? StripeSessionId { get; set; }
+        public string? StripePaymentIntentId { get; set; }
+
         public string Status { get; set; }
         public int ClientId { get; set; }
         public Client Client { get; set; }

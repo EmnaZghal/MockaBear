@@ -1,5 +1,156 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<MockaBear.Models.Order>
 @{
+    Layout    = "~/Views/Shared/EspaceAdmin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Order Management";
+}
+
+@await Html.PartialAsync("~/Views/Admin/OrderViews/_OrderDetails.cshtml")
+@await Html.PartialAsync("~/Views/Admin/OrderViews/_OrderEdit.cshtml")
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class="fa-solid fa-bars sidebarBtn"></i>
+            <span class="dashboard">Dashboard</span>
+        </div>
+
+        <div class="profile-details">
+            <span class="admin-name">
+                @Context.Session.GetString("AdminFirstName") @Context.Session.GetString("AdminLastName")
+            </span>
+            <img src="~/images/admin/admin.png"
+                 alt="Profile Image"
+                 style=" padding-left:15px; width: 70px; height: 70px; border-radius: 50%; object-fit: cover;" />
+
+        </div>
+    </nav>
+</section>
+<section class="table-section">
+    <div class="table-card">
+        <div class="card-title">
+            <div class="title-container">
+                <h3><i class="fa-solid fa-receipt"></i> Order list</h3>
+
+            </div>
+            <form method="get" asp-controller="Orders" asp-action="Orders">
+                <input type="hidden" name="section" value="orders" />
+                <div class="page-size-selector">
+                    <label for="pageSize">Orders per page :</label>
+                    <select id="pageSize" name="pageSize" onchange="this.form.submit()">
+                        @foreach (var size in new[] { 1, 2, 5, 10, 20, 50 })
+                        {
+                            if ((int?)ViewBag.PageSize == size)
+                            {
+                                <option value="@size" selected>@size</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </form>
+        </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      @foreach(var o in Model)
+      {
+        <tr>
+          <td>@o.OrderDate.ToString("dd/MM/yyyy")</td>
+          <td>@o.TotalAmount.ToString("F2") €</td>
+          <td>
+            <span class="badge status-@o.Status.ToLower()">@o.Status</span>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm btn-view"
+                    onclick="openOrderDetailModal(@o.Id)">
+              <i class="bx bx-show"></i>
+            </button>
+            <button class="btn btn-outline btn-sm btn-edit"
+                    onclick="openEditOrderModal(@o.Id, '@o.Status')">
+              <i class="bx bx-edit"></i>
+            </button>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
+        <div class="pagination">
+            <button onclick="changePage(@(ViewBag.CurrentPage - 1))" class="btn1" @(ViewBag.CurrentPage == 1 ? "disabled" : "")>
+                <i class='bx bxs-left-arrow'></i>
+            </button>
+            <ul>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="@(ViewBag.CurrentPage == i ? "active" : "")" onclick="changePage(@i)">@i</li>
+                }
+            </ul>
+            <button onclick="changePage(@(ViewBag.CurrentPage + 1))" class="btn2" @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")>
+                <i class='bx bxs-right-arrow'></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    function changePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        urlParams.set("pageSize", document.querySelector("select[name='pageSize']").value);
+        window.location.search = urlParams.toString();
+    }
+</script>
+
+@section Scripts {
+    <script>
+        // Buffer pour stocker les données d'une commande (chargées via AJAX)
+        let currentOrderItems = [];
+
+        function openOrderDetailModal(orderId) {
+          // On peut charger les items via fetch AJAX si besoin, ou passer un ViewModel complet
+          fetch(`/admin/Orders/Details/${orderId}`)
+            .then(r => r.json())
+            .then(data => {
+              currentOrderItems = data.items;
+              const body = document.getElementById('orderDetailBody');
+              body.innerHTML = '';
+              data.items.forEach(i => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                  <td>${i.productName}</td>
+                  <td>${i.quantity}</td>
+                  <td>${i.unitPrice.toFixed(2)} €</td>
+                  <td>${i.totale.toFixed(2)} €</td>`;
+                body.appendChild(tr);
+              });
+              document.getElementById('orderDetailModal').style.display = 'flex';
+            });
+        }
+        function closeOrderDetailModal() {
+          document.getElementById('orderDetailModal').style.display = 'none';
+        }
+
+        function openEditOrderModal(orderId, status) {
+          document.getElementById('editOrderId').value = orderId;
+          document.getElementById('editOrderStatus').value = status;
+          document.getElementById('editOrderModal').style.display = 'flex';
+        }
+        function closeEditOrderModal() {
+          document.getElementById('editOrderModal').style.display = 'none';
+        }
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/order.css" />
+    <link rel="stylesheet" href="~/css/Admin/orderModal.css" />
+
 }

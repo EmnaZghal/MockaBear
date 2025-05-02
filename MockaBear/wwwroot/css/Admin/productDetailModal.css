@@ -106,3 +106,33 @@
     .close-btn:hover {
         transform: scale(1.1);
     }
+
+/* Quantité normale */
+.stock-ok {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Rupture de stock */
+.stock-empty {
+    color: #e74c3c;
+    font-weight: 700;
+}
+
+.add-to-cart-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.qty-label {
+    font-weight: 600;
+}
+
+.qty-input {
+    width: 10px;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}

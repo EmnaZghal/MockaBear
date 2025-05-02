@@ -218,6 +218,11 @@ nav .search-box {
         box-shadow: 0 1px 0 0 #e9ecef;
     }
 
+    .data-table td input[type="checkbox"] {
+        padding-right: 0px;
+    }
+
+
 
     .data-table th:first-child {
         border-top-left-radius: 8px;
@@ -244,6 +249,36 @@ nav .search-box {
             transform: translateY(-1px);
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
         }
+
+    .data-table img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 2px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .data-table img:hover {
+            transform: scale(1.1);
+        }
+
+.stock {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+    .stock.outStock {
+        background-color: rgba(247, 37, 133, 0.15);
+        color: #db2777;
+        border: 1px solid rgba(247, 37, 133, 0.3);
+    }
 
 
 .btn {
@@ -309,7 +344,29 @@ nav .search-box {
         border-color: #5996ec;
     }
 
+.btn-edit {
+    border: 2px solid #f4a261;
+    background-color: transparent;
+    color: #f4a261;
+}
 
+    .btn-edit:hover {
+        background-color: #f4a261;
+        color: white;
+        border-color: #f4a261;
+    }
+
+.btn-delete {
+    border: 2px solid #e63946;
+    background-color: transparent;
+    color: #e63946;
+}
+
+    .btn-delete:hover {
+        background-color: #e63946;
+        color: white;
+        border-color: #e63946;
+    }
 
 /***Pagination ***/
 .pagination {
@@ -358,6 +415,11 @@ nav .search-box {
             border: none;
             color: #333;
         }
+
+
+
+
+
             .pagination ul li.active {
                 border-radius: 5px;
                 color: #fff;
@@ -411,4 +473,54 @@ nav .search-box {
     background-color: rgba(251, 140, 0, 0.15);
     color: #fb8c00;
     border: 1px solid rgba(251, 140, 0, 0.3);
+}
+
+
+.badge-out {
+    background: #e74c3c;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+/* Quantité normale */
+.stock-ok {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Rupture de stock */
+.stock-empty {
+    color: #e74c3c;
+    font-weight: 700;
+}
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: .85rem;
+}
+
+.status-pending {
+    background: #fcebcf;
+    color: #b87a00;
+}
+
+.status-confirmed {
+    background: #d1f2eb;
+    color: #0f6650;
+}
+
+.status-shipped {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+.status-delivered {
+    background: #e2f0d9;
+    color: #1e4620;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #842029;
 }

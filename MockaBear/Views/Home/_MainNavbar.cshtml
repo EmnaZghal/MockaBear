@@ -1,24 +1,60 @@
-﻿<header>
-    <a href="#" class="logo">
+﻿@inject MockaBear.Data.AppDbContext Db
+
+@{
+    int cartCount = 0;
+    int? cid = Context.Session.GetInt32("CartId");
+    if (cid != null)
+        cartCount = Db.CartItems.Where(i => i.CartId == cid).Sum(i => i.Quantity);
+
+}
+
+
+<header>
+    <a href="/" class="logo">
         <img src="~/Images/Logo/logo.png" alt="logo" />
         <span>Mocka Bear</span>
     </a>
 
     <ul class="navbar">
         <li><a href="/">Home</a></li>
-        <li><a href="#AboutUs">About Us</a></li>
+        <li><a asp-controller="Home" asp-action="AboutUs">About Us</a></li>
         <li><a href="/espaceClient/ProductList/products">Menu</a></li>
-        <li><a href="#CustomOrder">Custom Order</a></li>
     </ul>
 
     <div class="header-icon">
-        <div class="cart-icon-wrapper" id="cart-icon">
+        
+        <a asp-controller="Cart"
+           asp-action="Index"
+           class="cart-icon-wrapper"
+           id="cart-icon">
             <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge">@cartCount</span>
+        </a>
+       
 
-            <span class="cart-badge">3</span>
-        </div>
-        <div class="log-in-wrapper">
-            <a href="#" class="log-in-btn" onclick="openLoginModal()">Log In</a>
-        </div>
-    </div>
+        @if (Context.Session.GetInt32("ClientId") != null)
+        {
+            <a href="/Account/Logout" title="Logout" style="color: inherit; margin-left: 10px;">
+                <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
+            </a>
+            <div class="client-info" style="display: flex; align-items: center; gap: 30px;">
+                <span style="font-weight: 500; font-size: 16px; color: #000;">
+                    @Context.Session.GetString("ClientFirstName") @Context.Session.GetString("ClientLastName")
+                </span>
+                <a asp-controller="Profile"
+                   asp-action="ProfileDetails"
+                   title="Mon profil">
+                    <img src="~/images/clients/@Context.Session.GetString("ClientImage")"
+                         alt="Profile Image"
+                         style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;" />
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="log-in-wrapper">
+                <a href="#" class="log-in-btn" onclick="openLoginModal()">Log In</a>
+            </div>
+        }
+     </div>
 </header>

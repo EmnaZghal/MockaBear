@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<MockaBear.Models.Product>
 @{
     ViewData["Title"] = "Mocka Bear";
+    int cartCount = ViewBag.CartCount ?? 0;
 }
 
 <section id="product">
@@ -30,13 +31,22 @@
             @foreach (var product in Model)
             {
                 <div class="product-box">
-                    <a class="product-box-img" href="#">
+                    <a class="product-box-img" asp-controller="ProductList"
+                       asp-action="Details"
+                       asp-route-id="@product.Id">
+                       
+
                         <img src="~/images/products/@product.Image" alt="@product.Name" />
                     </a>
                     <div class="product-box-text">
-                        <a href="#" class="product-text-title">@product.Name</a>
+                        <a asp-controller="ProductList"
+                           asp-action="Details"
+                           asp-route-id="@product.Id"
+                            class="product-text-title">@product.Name
+                        </a>
                         <span>@product.Price €</span>
-                        <a href="#" class="product-cart-btn">
+                        <a href="#" class="product-cart-btn" onclick="addToCart(@product.Id); return false;">
+                            
                             <i class="fa-solid fa-cart-plus"></i> Add to cart
                         </a>
                     </div>
@@ -74,9 +84,36 @@
         }
         window.location.search = urlParams.toString();
     }
+
+    const isLoggedIn = @(Context.Session.GetInt32("ClientId") != null ? "true" : "false");
+    let   cartCount  = @cartCount;
+
+            function addToCart(prodId) {
+      if (isLoggedIn === "false") {
+        openLoginModal();
+        return;
+      }
+
+      fetch("/Cart/Add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: prodId, qty: 1 })
+      })
+      .then(async response => {
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Erreur inconnue");
+        return payload;
+      })
+      .then(data => {
+        cartCount = data.count;
+        document.querySelector(".cart-badge").innerText = cartCount;
+      })
+      .catch(err => alert(err.message));
+    }
 </script>
+
+
 @section Styles {
     <link rel="stylesheet" href="~/css/Client/Navbar.css" />
     <link rel="stylesheet" href="~/css/Client/productList.css" />
 }
-

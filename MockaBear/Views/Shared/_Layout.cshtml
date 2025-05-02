@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/Client/login.css"/>
 
-
+    <!-- Font Awesome 6.5.0 Free – CSS uniquement -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          referrerpolicy="no-referrer" />
 
     @RenderSection("Styles", required: false)
     <!-- jQuery (à placer AVANT chosen) -->
@@ -46,6 +49,11 @@
 
 
     <script>
+
+        var openLogin = '@(ViewBag.OpenLoginModal ?? false)';
+        if (openLogin === 'True') { openLoginModal(); }
+
+
         function openLoginModal() {
             document.getElementById("loginModal").style.display = "flex";
             document.getElementById("signUpModal").style.display = "none";
@@ -87,6 +95,6 @@
     
     </script>
 
-
+    <partial name="_ValidationScriptsPartial" />
 </body>
 </html>

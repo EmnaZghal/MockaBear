@@ -14,5 +14,10 @@ namespace MockaBear.Controllers.Client
             // Tu peux passer une liste de produits ici via le modèle
             return View();
         }
+        [HttpGet]
+        public IActionResult AboutUs()
+        {
+            return View(); // cherchera Views/Home/AboutUs.cshtml
+        }
     }
 }

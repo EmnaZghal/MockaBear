@@ -1,0 +1,120 @@
+﻿@model MockaBear.Models.Cart
+@{
+    ViewData["Title"] = "Votre panier";
+}
+
+<div class="cart-container">
+
+    <!-- ■ Colonne de gauche : liste des produits -->
+    <div class="cart-items">
+        @foreach (var item in Model.Items)
+        {
+            <div class="cart-item-card" data-item-id="@item.Id">
+                <div class="item-left">
+                    <img src="~/images/products/@item.Product.Image"
+                         alt="@item.Product.Name" />
+                </div>
+                <div class="item-right">
+                    <p class="item-name">@item.Product.Name</p>
+
+                    <div class="item-controls">
+                        <!-- Quantité modifiable -->
+                        <input type="number"
+                               class="item-qty"
+                               value="@item.Quantity"
+                               min="1" />
+
+                        <form asp-controller="Cart" asp-action="Remove" method="post">
+                            <input type="hidden" name="itemId" value="@item.Id" />
+                            <button type="submit" class="btn-delete-item">&times;</button>
+                        </form>
+                    </div>
+
+                    <p class="item-info">
+                        Unit: <strong>@item.UnitPrice.ToString("F2") €</strong>
+                        &nbsp;|&nbsp;
+                        Line total: <strong class="line-total">
+                            @item.Totale.ToString("F2") €
+                        </strong>
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <ul class="summary-lines">
+            @foreach (var l in Model.Items)
+            {
+                <li data-item-id="@l.Id">
+                    <span>@l.Product.Name × @l.Quantity</span>
+                    <span class="summary-line-total">
+                        @l.Totale.ToString("F2") €
+                    </span>
+                </li>
+            }
+        </ul>
+        <div class="summary-total">
+            <span>Total</span>
+            <span id="cart-total">@Model.TotalAmount.ToString("F2") €</span>
+        </div>
+        <form asp-controller="Cart" asp-action="Checkout" method="post">
+            <button type="submit" class="btn-primary">Confirm order</button>
+        </form>
+    </div>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1) Suppression d'une ligne
+        document.querySelectorAll(".btn-delete-item").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const card = btn.closest(".cart-item-card");
+                const itemId = card.dataset.itemId;
+                // appeler l'action Remove via POST-redirect
+                const form = document.createElement("form");
+                form.method = "post";
+                form.action = `/Cart/Remove?itemId=${itemId}`;
+                document.body.append(form);
+                form.submit();
+            });
+        });
+
+        // 2) Modification de la quantité (AJAX)
+        document.querySelectorAll(".item-qty").forEach(input => {
+            input.addEventListener("change", async () => {
+                const card = input.closest(".cart-item-card");
+                const itemId = card.dataset.itemId;
+                const newQty = parseInt(input.value) || 1;
+
+                try {
+                    const resp = await fetch("/Cart/UpdateQty", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ itemId: itemId, qty: newQty })
+                    });
+                    if (!resp.ok) throw null;
+                    const data = await resp.json();
+
+                    // mettre à jour la ligne
+                    card.querySelector(".line-total").innerText = data.lineTotal.toFixed(2) + " €";
+                    // mettre à jour le résumé
+                    document.querySelector(`.summary-lines li[data-item-id='${itemId}'] .summary-line-total`)
+                            .innerText = data.lineTotal.toFixed(2) + " €";
+                    document.getElementById("cart-total")
+                            .innerText = data.total.toFixed(2) + " €";
+                } catch {
+                    alert("Impossible de modifier la quantité");
+                    // rétablir l'ancienne valeur
+                    input.value = input.getAttribute("value");
+                }
+            });
+        });
+    });
+</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/cart.css" />
+}

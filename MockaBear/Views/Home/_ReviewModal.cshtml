@@ -1,0 +1,82 @@
+﻿@*  /Views/Home/_ReviewModal.cshtml  *@
+@*  À inclure dans ProductDetails.cshtml avec :
+    @await Html.PartialAsync("~/Views/Home/_ReviewModal.cshtml") *@
+
+<!-- === MODAL "ADD REVIEW" ================================= -->
+<div id="addReviewModal" class="modal-overlay-Review">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeReviewModal(event)">&times;</span>
+
+        <div class="container">
+            <div class="title">Write a review</div>
+
+            <form asp-controller="ProductReview"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <div class="input-box">
+                    <span class="details">Rating</span>
+
+                    <div class="star-rating" id="ratingGroup">
+                        @* ordre 5 → 1 pour avoir 5 à gauche visuellement *@
+                        @for (int i = 5; i >= 1; i--)
+                        {
+                            <label data-val="@i">
+                                <input type="radio" name="Rating" value="@i" hidden />
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <!-- COMMENTAIRE -------------->
+                <div class="input-box">
+                    <span class="details">Comment</span>
+                    <textarea name="Comment"
+                              rows="4"
+                              placeholder="Share your thoughts…"
+                              required></textarea>
+                </div>
+
+                <!-- BOUTON ------------------->
+                <div class="button">
+                    <input type="submit" value="Submit review" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const group = document.getElementById("ratingGroup");
+        if (!group) return;                         // sécurité
+
+        group.addEventListener("click", (e) => {
+            const label = e.target.closest("label[data-val]");
+            if (!label) return;                     // clic hors étoile
+
+            /* 1. retirer l’ancienne sélection */
+            group.querySelectorAll("label").forEach(l =>
+                l.classList.remove("selected"));
+
+            /* 2. ajouter .selected sur l’étoile cliquée + celles à droite (DOM) */
+            label.classList.add("selected");
+            let next = label.nextElementSibling;
+            while (next) {
+                next.classList.add("selected");
+                next = next.nextElementSibling;
+            }
+
+            /* 3. cocher la radio correspondante */
+            label.querySelector('input[type="radio"]').checked = true;
+        });
+    });
+</script>
+@section Scripts {
+    
+}

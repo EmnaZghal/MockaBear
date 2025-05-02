@@ -222,10 +222,6 @@ nav .search-box {
         padding-right: 0px;
     }
 
-    .data-table th:first-child,
-    .data-table td:first-child {
-        width: 10px;
-    }
 
     .data-table th:first-child {
         border-top-left-radius: 8px;

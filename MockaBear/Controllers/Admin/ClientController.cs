@@ -33,12 +33,19 @@ namespace MockaBear.Controllers.Admin
         {
             var client = _context.Clients.Find(id);
             if (client == null)
-            {
                 return NotFound();
-            }
 
-            _context.Clients.Remove(client);
-            _context.SaveChanges();
+            try
+            {
+                _context.Clients.Remove(client);
+                _context.SaveChanges();
+                TempData["Success"] = "Client supprimé avec succès.";
+            }
+            catch (DbUpdateException)
+            {
+                // Erreur liée à une contrainte FK
+                TempData["Error"] = "Cannot delete this client: there are still orders or reviews associated with them.";
+            }
 
             return RedirectToAction("Clients");
         }

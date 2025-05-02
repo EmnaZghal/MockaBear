@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";    // ou votre layout principal
+    ViewData["Title"] = "About Us – Mocka Bear";
+}
+
+
+<div class="about-page">
+
+    <!-- Hero / Introduction -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Welcome to Mocka Bear</h1>
+            <p>
+                At Mocka Bear, we believe coffee is more than a drink—it's a hug in a mug.
+                Nestled in the heart of town, our café blends cozy vibes, handcrafted brews,
+                and a dash of bear-y sweetness.
+            </p>
+        </div>
+        <div class="hero-image">
+            <img src="~/images/about/interior.png" alt="Interior of Mocka Bear café" />
+        </div>
+    </section>
+
+    <!-- Location / Exterior -->
+    <section class="location">
+        <h2>Our Location</h2>
+        <div class="location-content">
+            <div class="location-image">
+                <img src="~/images/about/exterior.png" alt="Exterior of Mocka Bear café" />
+            </div>
+            <div class="location-text">
+                <p>
+                    You’ll find us on Maple Street, just around the corner from the old town square.
+                    Bright teal doors invite you in, and our signature Mocka Bear sign makes us
+                    hard to miss. Whether you’re on your way to work or meeting friends, our doors
+                    are always open.
+                </p>
+                <address>
+                    123 Maple Street<br />
+                    Pleasantville, PA 19019
+                </address>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team">
+        <h2>Meet the Team</h2>
+        <p>
+            Our baristas are the heart of Mocka Bear. Each one is trained to craft your drink
+            just the way you like it—and always with a smile (and a bear-themed apron).
+        </p>
+        <div class="team-image">
+            <img src="~/images/about/team.png" alt="Mocka Bear café team" />
+        </div>
+    </section>
+
+</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/AboutUs.css" />
+}

@@ -1,0 +1,142 @@
+﻿/********** OVERLAY & CONTAINER **********/
+.modal-overlay-Review {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    display: none; /* caché par défaut */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+    .modal-overlay-Review.active { /* ajouté en JS */
+        display: flex;
+        animation: fadeIn .3s ease;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 95%;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,.3);
+}
+
+/********** TITRE & FERMETURE **********/
+.container .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+}
+
+/********** CHAMPS ************************/
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+    .input-box span.details {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .input-box textarea,
+    .input-box input[type="text"],
+    .input-box input[type="number"],
+    .input-box input[type="file"],
+    .input-box select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+/********** BOUTON SUBMIT *****************/
+.button input[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #6f4e37;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+    .button input[type="submit"]:hover {
+        background: #5a3f2b;
+    }
+
+/********** STAR RATING ***************************************/
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* 5 à gauche - 1 à droite */
+    gap: 4px;
+}
+
+    .star-rating input {
+        display: none;
+    }
+    /* on masque les radios */
+
+    .star-rating label {
+        cursor: pointer;
+    }
+
+    /* l’icône en gris par défaut */
+    .star-rating i {
+        font-size: 28px;
+        color: #ccc;
+        pointer-events: none; /* le clic passe au <label> */
+        transition: color .2s;
+    }
+
+    /* Survol live-preview */
+    .star-rating label:hover i,
+    .star-rating label:hover ~ label i {
+        color: #ffc107;
+    }
+
+    /* Sélection réelle (cliquée) */
+    .star-rating label.selected i,
+    .star-rating label.selected ~ label i {
+        color: #ffc107;
+    }
+
+    .star-rating label:hover i,
+    .star-rating label:hover ~ label i /* ← garde */ {
+        color: #ffc107;
+    }
+/********** MESSAGE ERREUR ****************/
+.text-danger {
+    color: #e74c3c;
+}

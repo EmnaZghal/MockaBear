@@ -3,7 +3,8 @@
         <span class="close-btn" onclick="closeSignUpModal()">&times;</span>
         <div class="container">
             <div class="title">Sign Up</div>
-            <form method="post" asp-controller="Account" asp-action="SignUp">
+            <form method="post" asp-controller="Account" asp-action="SignUp" enctype="multipart/form-data">
+                
                 @Html.AntiForgeryToken()
                 @if (ViewData.ModelState["Email"] != null && ViewData.ModelState["Email"].Errors.Count > 0)
                 {

@@ -12,12 +12,14 @@
             <span class="dashboard">Dashboard</span>
         </div>
 
-        <div class="search-box">
-            <input type="text" placeholder="Search. . ." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+
         <div class="profile-details">
-            <span class="admin-name">Emna Zghal</span>
+            <span class="admin-name">
+                @Context.Session.GetString("AdminFirstName") @Context.Session.GetString("AdminLastName")
+            </span>
+            <img src="~/images/admin/admin.png"
+                 alt="Profile Image"
+                 style=" padding-left:15px; width: 70px; height: 70px; border-radius: 50%; object-fit: cover;" />
 
         </div>
     </nav>

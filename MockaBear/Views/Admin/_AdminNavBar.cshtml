@@ -35,17 +35,10 @@
         </li>
 
         <li>
-            <a href="">
+            <a href="/admin/orders/orders"
+               class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower() == "orders" ? "active" : "")">
                 <i class='bx bxs-receipt'></i>
                 <span class="link_name">Orders</span>
-
-            </a>
-        </li>
-        <li>
-            <a href="">
-                
-                <i class='bx bxs-customize'></i>
-                <span class="link_name">Custom Orders</span>
 
             </a>
         </li>
@@ -59,18 +52,19 @@
         </li>
 
         <li>
-            <a href="/admin/ingredient/ingredients" class="@(ViewContext.RouteData.Values["controller"].ToString() == "ingredient" ? "active" : "")">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <span class="link_name">Ingredients</span>
+            <a href="/admin/administrator/administrators" class="@(ViewContext.RouteData.Values["controller"].ToString() == "ingredient" ? "active" : "")">
+                <i class="fa-solid fa-user-tie"></i>
+                <span class="link_name">Admin</span>
 
             </a>
         </li>
     </ul>
         <ul class="nav-links logout-link">
             <li class="nav-links logout-link">
-                <a href="">
+            <a href="/Account/Logout">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span class="link_name">Log out</span>
+                
 
                 </a>
             </li>

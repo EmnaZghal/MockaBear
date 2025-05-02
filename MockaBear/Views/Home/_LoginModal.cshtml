@@ -6,6 +6,13 @@
             <form method="post" asp-controller="Account" asp-action="Login">
                 @Html.AntiForgeryToken()
 
+                @if (ViewData.ModelState[string.Empty] != null &&
+                ViewData.ModelState[string.Empty].Errors.Count > 0)
+                {
+                    <span class="text-danger">
+                        @ViewData.ModelState[string.Empty].Errors[0].ErrorMessage
+                    </span>
+                }
                 <div class="input-box">
                     <span class="details">Email</span>
                     <input type="email" name="Email" required />

@@ -22,6 +22,24 @@
 </head>
 <body>
 
+    @{
+        var error = TempData["Error"] as string;
+        var success = TempData["Success"] as string;
+    }
+    <div id="messageModal" class="message-modal-overlay">
+        <div class="message-modal-content">
+            <span class="close-btn" onclick="closeMessageModal()">&times;</span>
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger">@error</div>
+            }
+            else if (!string.IsNullOrEmpty(success))
+            {
+                <div class="alert alert-success">@success</div>
+            }
+        </div>
+    </div>
     <!-- Barre de navigation ADMIN uniquement -->
     @await Html.PartialAsync("~/Views/Admin/_AdminNavBar.cshtml")
 
@@ -33,7 +51,18 @@
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="https://kit.fontawesome.com/574c761be7.js" crossorigin="anonymous"></script>
     <script src="~/js/Admin/Navbar.js"></script>
+    <script>
+                document.addEventListener('DOMContentLoaded', function() {
+          var modal = document.getElementById('messageModal');
+          if (modal && modal.querySelector('.alert')) {
+            modal.classList.add('show');
+          }
+        });
 
+        function closeMessageModal() {
+          document.getElementById('messageModal').classList.remove('show');
+        }
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

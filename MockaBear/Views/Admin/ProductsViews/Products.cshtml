@@ -14,12 +14,15 @@
             <i class="fa-solid fa-bars sidebarBtn"></i>
             <span class="dashboard">Dashboard</span>
         </div>
-        <div class="search-box">
-            <input type="text" placeholder="Search. . ." />
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+
         <div class="profile-details">
-            <span class="admin-name">Emna Zghal</span>
+            <span class="admin-name">
+                @Context.Session.GetString("AdminFirstName") @Context.Session.GetString("AdminLastName")
+            </span>
+            <img src="~/images/admin/admin.png"
+                 alt="Profile Image"
+                 style=" padding-left:15px; width: 70px; height: 70px; border-radius: 50%; object-fit: cover;" />
+
         </div>
     </nav>
 </section>
@@ -58,6 +61,7 @@
                     <th>Name</th>
                     <th>Image</th>
                     <th>Price</th>
+                    <th>Stock</th>
                     <th>Available</th>
                     <th>Category</th>
                     <th>Actions</th>
@@ -69,6 +73,7 @@
                     var name = JavaScriptEncoder.Default.Encode(product.Name);
                     var description = JavaScriptEncoder.Default.Encode(product.Description);
                     var price = product.Price.ToString("F2");
+                    var stock = product.Stock;
                     var isAvailable = product.IsAvailable.ToString();
                     var category = JavaScriptEncoder.Default.Encode(product.Category?.Name ?? "");
                     var image = product.Image;
@@ -76,7 +81,16 @@
                         <td>@product.Name</td>
                         <td><img src="~/images/products/@product.Image" alt="Product Image" /></td>
                         <td>@product.Price €</td>
-
+                        <td>
+                            @if (product.Stock == 0)
+                            {
+                                <span class="badge badge-out">Out of stock</span>
+                            }
+                            else
+                            {
+                                @product.Stock
+                            }
+                        </td>
                         <td>
                             @if (!product.IsAvailable)
                             {
@@ -94,6 +108,7 @@
                                         @Html.Raw(Json.Serialize(name)),
                                         @Html.Raw(Json.Serialize(description)),
                                         @Html.Raw(Json.Serialize(price)),
+                                        @Html.Raw(Json.Serialize(stock)),
                                         @Html.Raw(Json.Serialize(isAvailable)),
                                         @Html.Raw(Json.Serialize(category)),
                                         @Html.Raw(Json.Serialize(product.Image))
@@ -109,6 +124,7 @@
                                     '@Html.Raw(JavaScriptEncoder.Default.Encode(product.Name))',
                                     '@Html.Raw(JavaScriptEncoder.Default.Encode(product.Description))',
                                     '@product.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)',
+                                     @product.Stock,
                                     '@product.IsAvailable.ToString()',
                                     '@product.CategoryId')">
                                 <i class='bx bxs-edit'></i>
@@ -172,10 +188,11 @@
             document.getElementById("productModal").style.display = "none";
         }
 
-        function showProductDetails(name, description, price, isAvailable, categoryName, image) {
+        function showProductDetails(name, description, price, stock, isAvailable, categoryName, image) {
             document.getElementById("productDetailName").innerText = name;
             document.getElementById("productDetailDescription").innerText = description;
             document.getElementById("productDetailPrice").innerText = price;
+            document.getElementById("productDetailStock").innerText = stock;
 
 
             document.getElementById("productDetailAvailable").innerText = isAvailable === 'True' ? 'Yes' : 'No';
@@ -190,11 +207,12 @@
         }
 
 
-                function openEditProductModal(id, name, description, price, isAvailable, categoryId) {
+                function openEditProductModal(id, name, description, price, stock, isAvailable, categoryId) {
             document.getElementById("editProductId").value = id;
             document.getElementById("editProductName").value = name;
             document.getElementById("editProductDescription").value = description;
             document.getElementById("editProductPrice").value = price;
+            document.getElementById("editProductStock").value = stock;
             document.getElementById("editProductAvailable").checked = isAvailable === 'True';
             document.getElementById("editProductCategoryId").value = categoryId;
 

@@ -1,0 +1,39 @@
+﻿<!-- _EditAdminModal.cshtml -->
+<div id="editAdminModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditAdminModal()">&times;</span>
+        <div class="container">
+            <div class="title">Edit Administrator</div>
+
+            <form method="post" asp-controller="Administrator" asp-action="Update">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" id="editAdminId" name="id" />
+
+                <div class="input-box">
+                    <span class="details">First Name</span>
+                    <input type="text" id="editAdminFirstName" name="firstName" required />
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Last Name</span>
+                    <input type="text" id="editAdminLastName" name="lastName" required />
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="email" id="editAdminEmail" name="email" required />
+                </div>
+
+                <div class="input-box">
+                    <span class="details">New Password <em>(optional)</em></span>
+                    <input type="password" name="password" placeholder="Leave blank to keep current" />
+                </div>
+
+                <div class="button">
+                    <input type="submit" value="Update" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

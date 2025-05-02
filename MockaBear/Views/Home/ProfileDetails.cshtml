@@ -1,0 +1,99 @@
+﻿@model MockaBear.Models.Client
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h1>Hello, @Model.FirstName!</h1>
+
+<div class="profile-container">
+    <div class="profile-avatar">
+        <img src="~/images/clients/@Model.Image" alt="@Model.FirstName" />
+    </div>
+    <div class="profile-info">
+        <p><strong>Full Name:</strong> @Model.FirstName @Model.LastName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Phone:</strong> @Model.Phone</p>
+        <p><strong>Address:</strong> @Model.Adress</p>
+        <p><strong>Member Since:</strong> @Model.DateAdded.ToString("dd MMM yyyy")</p>
+    </div>
+</div>
+
+<hr />
+
+<h2>My Orders</h2>
+@if (Model.Orders?.Any() == true)
+{
+    <div class="orders-grid">
+        @foreach (var o in Model.Orders.OrderByDescending(x => x.OrderDate))
+        {
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-id">Order #@o.Id</span>
+                    <span class="order-date">@o.OrderDate.ToString("dd MMM yyyy")</span>
+                </div>
+                <div class="order-status status-@o.Status.ToLower()">@o.Status</div>
+                <div class="order-total">Total: @o.TotalAmount.ToString("F2") €</div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>You haven’t placed any orders yet.</p>
+}
+
+<hr />
+
+<h2>My Reviews</h2>
+@if (Model.Reviews?.Any() == true)
+{
+    <div class="reviews-grid">
+        @foreach (var r in Model.Reviews.OrderByDescending(r => r.ReviewDate))
+        {
+            <div class="review-card">
+                <!-- Header: avatar + name + date -->
+                <div class="review-header">
+                    <img src="~/images/clients/@(r.Client?.Image ?? "default-avatar.png")"
+                         alt="Avatar @r.Client?.FirstName"
+                         class="avatar" />
+                    <div class="author-info">
+                        <span class="author-name">
+                            @r.Client?.FirstName @r.Client?.LastName
+                        </span>
+                        <span class="review-date">
+                            @r.ReviewDate.ToString("dd MMM yyyy")
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Stars -->
+                <div class="rating">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= r.Rating)
+                        {
+                            <i class="fa-solid fa-star"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-regular fa-star"></i>
+                        }
+                    }
+                </div>
+
+                <!-- Review text -->
+                <p class="review-text">@r.Comment</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>You haven’t written any reviews yet.</p>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Client/Navbar.css" />
+    <link rel="stylesheet" href="~/css/Client/profile.css" />
+}

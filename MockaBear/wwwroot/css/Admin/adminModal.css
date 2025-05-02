@@ -80,3 +80,18 @@
     .button input[type="submit"]:hover {
         background: #5a3f2b;
     }
+
+.input-box input[type="text"],
+.input-box input[type="number"],
+.input-box input[type="file"],
+.input-box input[type="email"],
+.input-box input[type="password"],
+.input-box select /* ← ajoutez ceci */ {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
